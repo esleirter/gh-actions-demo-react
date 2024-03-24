@@ -2,7 +2,7 @@ name: Lint, Test & Deploy on push
 on: push
 
 jobs:
-  testing:
+  Lint:
     runs-on: ubuntu-latest
     steps:
       - name: Get code
@@ -15,5 +15,31 @@ jobs:
         run: npm ci
       - name: Run Lint
         run: npm run lint
+  Testing:
+    needs: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+      - name: Setting up node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
       - name: Run test
-        run: npm run test  
+        run: npm run test
+  Deploying:
+    needs: Testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+      - name: Setting up node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
+      - name: Building App
+        run: npm run build
