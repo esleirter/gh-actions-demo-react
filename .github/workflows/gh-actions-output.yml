@@ -1,0 +1,9 @@
+name: GH Ouput Information
+on: issues
+
+jobs:
+  Information:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Output Information
+        run: echo "{{ toJson(github) }}"
